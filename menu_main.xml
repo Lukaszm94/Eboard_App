@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/connect"
+        android:title="Connect"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/battery"
+        android:title="Battery"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/current"
+        android:title="Current"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/speed"
+        android:title="Speed"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/temperature"
+        android:title="Temperature"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/map"
+        android:title="Map"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/lights"
+        android:title="Lights"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/settings"
+        android:title="Settings"
+        app:showAsAction="never"/>
+
+</menu>
