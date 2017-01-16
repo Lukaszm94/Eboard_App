@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 public class Battery extends AppCompatActivity {
 
     @Override
@@ -30,6 +34,16 @@ public class Battery extends AppCompatActivity {
         textView_cell5.setText("7");
         TextView textView_cell6 = (TextView) findViewById(R.id.text_battery_cell6_value);
         textView_cell6.setText("8");
+
+        GraphView graph = (GraphView) findViewById(R.id.graph_battery);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, 1),
+                new DataPoint(1, 5),
+                new DataPoint(2, 3),
+                new DataPoint(3, 2),
+                new DataPoint(4, 6)
+        });
+        graph.addSeries(series);
 
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_battery);
 

@@ -22,12 +22,12 @@ public class Lights extends AppCompatActivity {
         setContentView(R.layout.activity_lights);
         Intent intent_lights = getIntent();
 
-        /*SeekBar seekBar_front=(SeekBar)findViewById(R.id.seekbar_front);
-        int seekBar_front_value= seekBar_front.getProgress();
-        SeekBar seekBar_back=(SeekBar)findViewById(R.id.seekbar_back);
-        int seekBar_back_value= seekBar_front.getProgress();
+        SeekBar seekBar_front = (SeekBar) findViewById(R.id.slider_front);
+        int seekBar_front_value = seekBar_front.getProgress();
+        SeekBar seekBar_back = (SeekBar) findViewById(R.id.slider_back);
+        int seekBar_back_value = seekBar_front.getProgress();
 
-        List <String> spinnerArray = new ArrayList <String>();
+        /*List <String> spinnerArray = new ArrayList <String>();
         spinnerArray.add("Mode 1");
         spinnerArray.add("Mode 2");
         spinnerArray.add("Mode 3");
@@ -72,9 +72,4 @@ public class Lights extends AppCompatActivity {
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_lights);
 
     }
-    /*
-    public void update_data(View view)
-    {
-
-    }*/
 }
