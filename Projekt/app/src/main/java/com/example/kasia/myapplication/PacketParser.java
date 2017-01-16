@@ -208,8 +208,8 @@ public class PacketParser {
         }
         packet.CUBatteryVoltage = buffer.getShort() / 100.0;
         packet.VESCBatteryVoltage = buffer.getShort() / 100.0;
-        packet.ampHoursDrawn = buffer.getShort() / 100.0;
-        packet.ampHoursCharged = buffer.getShort() / 100.0;
+        packet.ampHoursDrawn = buffer.getShort() / 1000.0;
+        packet.ampHoursCharged = buffer.getShort() / 1000.0;
         packet.timestamp = System.currentTimeMillis();
         buffer.clear();
         return packet;
