@@ -1,6 +1,7 @@
 package com.example.kasia.myapplication;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
@@ -44,6 +45,8 @@ public class Battery extends AppCompatActivity {
                 new DataPoint(4, 6)
         });
         graph.addSeries(series);
+
+
 
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_battery);
 

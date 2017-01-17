@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 public class Temperature extends AppCompatActivity {
 
     @Override
@@ -18,6 +22,16 @@ public class Temperature extends AppCompatActivity {
         textView_temperature_momentary.setText("1");
         TextView textView_temperature_average = (TextView) findViewById(R.id.text_temperature_average_value);
         textView_temperature_average.setText("2");
+
+        GraphView graph = (GraphView) findViewById(R.id.graph_temperature);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, 1),
+                new DataPoint(1, 5),
+                new DataPoint(2, 3),
+                new DataPoint(3, 2),
+                new DataPoint(4, 6)
+        });
+        graph.addSeries(series);
 
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_temperature);
     }

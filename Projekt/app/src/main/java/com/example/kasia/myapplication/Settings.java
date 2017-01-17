@@ -16,8 +16,8 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Intent intent_settings = getIntent();
 
-        /*EditText editText_settings_N = (EditText) findViewById(R.id.edit_settings_N);
-        String text_settings_N = editText_settings_N.getText().toString();*/
+        EditText editText_settings_N = (EditText) findViewById(R.id.edit_settings_N);
+        String text_settings_N = editText_settings_N.getText().toString();
 
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_settings);
 

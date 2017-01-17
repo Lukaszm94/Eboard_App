@@ -27,13 +27,13 @@ public class Lights extends AppCompatActivity {
         SeekBar seekBar_back = (SeekBar) findViewById(R.id.slider_back);
         int seekBar_back_value = seekBar_front.getProgress();
 
-        /*List <String> spinnerArray = new ArrayList <String>();
+        List <String> spinnerArray = new ArrayList <String>();
         spinnerArray.add("Mode 1");
         spinnerArray.add("Mode 2");
         spinnerArray.add("Mode 3");
 
         ArrayAdapter <String> adapter = new ArrayAdapter<String>(this,
-        android.R.layout.simple_spinner_item, spinnerArray);
+                android.R.layout.simple_spinner_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner spinner_front = (Spinner) findViewById(R.id.spinner_front);
         spinner_front.setAdapter(adapter);
@@ -45,7 +45,18 @@ public class Lights extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView <?> adapterView, View view, int position, long id)
             {
+                switch (position) {
+                    case 0:
+                        // 1
+                        break;
+                    case 1:
+                        // 2
+                        break;
+                    case 2:
+                        // 3
+                        break;
 
+                }
             }
 
             @Override
@@ -59,7 +70,18 @@ public class Lights extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView <?> adapterView, View view, int position, long id)
             {
+                switch (position) {
+                    case 0:
+                        // 1
+                        break;
+                    case 1:
+                        // 2
+                        break;
+                    case 2:
+                        // 3
+                        break;
 
+                }
             }
 
             @Override
@@ -67,7 +89,7 @@ public class Lights extends AppCompatActivity {
             {
 
             }
-        });*/
+        });
 
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_lights);
 
