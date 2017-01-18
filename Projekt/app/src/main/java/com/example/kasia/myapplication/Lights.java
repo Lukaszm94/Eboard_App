@@ -1,13 +1,19 @@
 package com.example.kasia.myapplication;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.AdapterView;
@@ -15,6 +21,14 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
 
 public class Lights extends AppCompatActivity {
+    Spinner spinner_front;
+    Spinner spinner_back;
+    SeekBar seekBar_front;
+    SeekBar seekBar_back;
+    private static WeakReference<BluetoothSocket> btSocketReference;
+
+    public final int UPDATE_REAR_LIGHTS_REQUEST_CODE = 1;
+    private final String TAG = "Lights";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +36,8 @@ public class Lights extends AppCompatActivity {
         setContentView(R.layout.activity_lights);
         Intent intent_lights = getIntent();
 
-        SeekBar seekBar_front = (SeekBar) findViewById(R.id.slider_front);
-        int seekBar_front_value = seekBar_front.getProgress();
-        SeekBar seekBar_back = (SeekBar) findViewById(R.id.slider_back);
-        int seekBar_back_value = seekBar_front.getProgress();
+        seekBar_front = (SeekBar) findViewById(R.id.slider_front);
+        seekBar_back = (SeekBar) findViewById(R.id.slider_back);
 
         List <String> spinnerArray = new ArrayList <String>();
         spinnerArray.add("Mode 1");
@@ -35,9 +47,9 @@ public class Lights extends AppCompatActivity {
         ArrayAdapter <String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner spinner_front = (Spinner) findViewById(R.id.spinner_front);
+        spinner_front = (Spinner) findViewById(R.id.spinner_front);
         spinner_front.setAdapter(adapter);
-        Spinner spinner_back = (Spinner) findViewById(R.id.spinner_back);
+        spinner_back = (Spinner) findViewById(R.id.spinner_back);
         spinner_back.setAdapter(adapter);
 
         spinner_front.setOnItemSelectedListener(new OnItemSelectedListener()
@@ -92,6 +104,26 @@ public class Lights extends AppCompatActivity {
         });
 
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_lights);
+    }
 
+    public static void setBluetoothSocket(BluetoothSocket socket) {
+        btSocketReference = new WeakReference<BluetoothSocket>(socket);
+    }
+
+    public void update_data(View v) {
+        int mode = spinner_back.getSelectedItemPosition();
+        int brightness = seekBar_back.getProgress();
+        LightsPacket packet = new LightsPacket((byte) brightness, (byte) 1, (byte) mode);
+
+        if(btSocketReference == null) {
+            return;
+        }
+        String message = "Update OK";
+        try {
+            btSocketReference.get().getOutputStream().write(packet.toSerialPacket());
+        } catch (IOException e) {
+            message = "Update failed";
+        }
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 }

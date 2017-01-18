@@ -225,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
                 showMessage("Connected.");
                 dataManager.start();
                 startReceiving();
+                Lights.setBluetoothSocket(btSocket);
                 isBtConnected = true;
             }
             progress.dismiss();
