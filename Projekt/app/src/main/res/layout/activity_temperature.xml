@@ -17,67 +17,88 @@
         android:orientation="vertical"
         android:visibility="visible" >
 
-    <com.jjoe64.graphview.GraphView
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:id="@+id/graph_temperature" />
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:id="@+id/graph_temperature" />
 
-    <GridLayout
-        android:id="@+id/GridLayout4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:rowCount="3"
-        android:layout_margin="5dp"
-        android:orientation="horizontal"
-        tools:context="com.inducesmile.gridlayouttutorial.Temperature">
-        <Space />
-
-        <TextView
-            android:id="@+id/text_temperature"
-            android:text="Temperature"
-            android:layout_column="0"
-            android:layout_row="0"
+        <GridLayout
+            android:id="@+id/GridLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="4"
             android:layout_margin="5dp"
-            android:textSize="20dp"/>
+            android:orientation="horizontal"
+            tools:context="com.inducesmile.gridlayouttutorial.Temperature">
+            <Space />
 
-        <TextView
-            android:id="@+id/text_momentTemp"
-            android:text="Momentary"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:layout_margin="5dp"
-            android:textSize="20dp"/>
+            <TextView
+                android:id="@+id/text_temperature"
+                android:text="Temperature"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:layout_margin="5dp"
+                android:textSize="20dp"/>
 
-        <TextView
-            android:id="@+id/text_avgTemp"
-            android:text="Average"
-            android:layout_column="1"
-            android:layout_row="1"
-            android:layout_margin="5dp"
-            android:textSize="20dp"/>
+            <TextView
+                android:id="@+id/text_momentTemp"
+                android:text="Momentary"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:layout_margin="5dp"
+                android:textSize="20dp"/>
 
-        <TextView
-            android:id="@+id/text_temperature_momentary_value"
-            android:text="value"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textColorHighlight="@android:color/primary_text_dark"
-            android:layout_column="0"
-            android:layout_row="2"
-            android:layout_margin="5dp"
-            android:textSize="20dp"/>
+            <TextView
+                android:id="@+id/text_avgTemp"
+                android:text="Average"
+                android:layout_column="1"
+                android:layout_row="1"
+                android:layout_margin="5dp"
+                android:textSize="20dp"/>
 
-        <TextView
-            android:id="@+id/text_temperature_average_value"
-            android:text="value2"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textColorHighlight="@android:color/primary_text_dark"
-            android:layout_column="1"
-            android:layout_row="2"
-            android:layout_margin="5dp"
-            android:textSize="20dp"/>
+            <TextView
+                android:id="@+id/text_temperature1_momentary_value"
+                android:text="value"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textColorHighlight="@android:color/primary_text_dark"
+                android:layout_column="0"
+                android:layout_row="2"
+                android:layout_margin="5dp"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/text_temperature1_average_value"
+                android:text="value2"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textColorHighlight="@android:color/primary_text_dark"
+                android:layout_column="1"
+                android:layout_row="2"
+                android:layout_margin="5dp"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/text_temperature2_momentary_value"
+                android:text="value"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textColorHighlight="@android:color/primary_text_dark"
+                android:layout_column="0"
+                android:layout_row="3"
+                android:layout_margin="5dp"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/text_temperature2_average_value"
+                android:text="value2"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textColorHighlight="@android:color/primary_text_dark"
+                android:layout_column="1"
+                android:layout_row="3"
+                android:layout_margin="5dp"
+                android:textSize="20dp"/>
 
 
-    </GridLayout>
+        </GridLayout>
     </LinearLayout>
 </RelativeLayout>
+

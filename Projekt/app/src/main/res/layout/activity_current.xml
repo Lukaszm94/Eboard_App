@@ -19,7 +19,7 @@
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="110dp"
             android:id="@+id/graph_current" />
 
         <GridLayout
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:columnCount="3"
-            android:rowCount="5"
+            android:rowCount="4"
             android:layout_margin="5dp"
             android:orientation="horizontal"
             tools:context="com.inducesmile.gridlayouttutorial.Current">
@@ -35,7 +35,7 @@
 
             <TextView
                 android:id="@+id/text_current"
-                android:text="Current"
+                android:text="  "
                 android:layout_column="0"
                 android:layout_row="0"
                 android:layout_margin="5dp"
@@ -44,16 +44,16 @@
             <TextView
                 android:id="@+id/text_momentCur"
                 android:text="Momentary"
-                android:layout_column="0"
-                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_row="0"
                 android:layout_margin="5dp"
                 android:textSize="20dp"/>
 
             <TextView
                 android:id="@+id/text_avgCur"
                 android:text="Average"
-                android:layout_column="1"
-                android:layout_row="1"
+                android:layout_column="2"
+                android:layout_row="0"
                 android:layout_margin="5dp"
                 android:textSize="20dp"/>
 
@@ -62,7 +62,7 @@
                 android:id="@+id/text_current_i1"
                 android:text="I1: "
                 android:layout_column="0"
-                android:layout_row="2"
+                android:layout_row="1"
                 android:layout_margin="5dp"
                 android:textSize="20dp"/>
 
@@ -72,7 +72,7 @@
                 android:textColor="@android:color/holo_blue_dark"
                 android:textColorHighlight="@android:color/primary_text_dark"
                 android:layout_column="1"
-                android:layout_row="2"
+                android:layout_row="1"
                 android:layout_margin="5dp"
                 android:textSize="20dp"/>
 
@@ -82,7 +82,7 @@
                 android:textColor="@android:color/holo_blue_dark"
                 android:textColorHighlight="@android:color/primary_text_dark"
                 android:layout_column="2"
-                android:layout_row="2"
+                android:layout_row="1"
                 android:layout_margin="5dp"
                 android:textSize="20dp"/>
 
@@ -90,7 +90,7 @@
                 android:id="@+id/text_current_i2"
                 android:text="I2: "
                 android:layout_column="0"
-                android:layout_row="3"
+                android:layout_row="2"
                 android:layout_margin="5dp"
                 android:textSize="20dp"/>
 
@@ -100,7 +100,7 @@
                 android:textColor="@android:color/holo_blue_dark"
                 android:textColorHighlight="@android:color/primary_text_dark"
                 android:layout_column="1"
-                android:layout_row="3"
+                android:layout_row="2"
                 android:layout_margin="5dp"
                 android:textSize="20dp"/>
 
@@ -110,7 +110,7 @@
                 android:textColor="@android:color/holo_blue_dark"
                 android:textColorHighlight="@android:color/primary_text_dark"
                 android:layout_column="2"
-                android:layout_row="3"
+                android:layout_row="2"
                 android:layout_margin="5dp"
                 android:textSize="20dp"/>
 
@@ -118,7 +118,7 @@
                 android:id="@+id/text_current_i1i2"
                 android:text="I1 + I2: "
                 android:layout_column="0"
-                android:layout_row="4"
+                android:layout_row="3"
                 android:layout_margin="5dp"
                 android:textSize="20dp"/>
 
@@ -128,7 +128,7 @@
                 android:textColor="@android:color/holo_blue_dark"
                 android:textColorHighlight="@android:color/primary_text_dark"
                 android:layout_column="1"
-                android:layout_row="4"
+                android:layout_row="3"
                 android:layout_margin="5dp"
                 android:textSize="20dp"/>
 
@@ -138,12 +138,11 @@
                 android:textColor="@android:color/holo_blue_dark"
                 android:textColorHighlight="@android:color/primary_text_dark"
                 android:layout_column="2"
-                android:layout_row="4"
+                android:layout_row="3"
                 android:layout_margin="5dp"
                 android:textSize="20dp"/>
 
         </GridLayout>
     </LinearLayout>
-
-
 </RelativeLayout>
+

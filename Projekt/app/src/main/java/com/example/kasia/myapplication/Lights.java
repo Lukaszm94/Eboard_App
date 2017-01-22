@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +20,10 @@ import android.widget.Spinner;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
+import android.support.v4.app.Fragment;
 
-public class Lights extends AppCompatActivity {
+
+public class Lights extends Fragment {
     Spinner spinner_front;
     Spinner spinner_back;
     SeekBar seekBar_front;
@@ -31,28 +34,28 @@ public class Lights extends AppCompatActivity {
     private final String TAG = "Lights";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lights);
-        Intent intent_lights = getIntent();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        seekBar_front = (SeekBar) findViewById(R.id.slider_front);
-        seekBar_back = (SeekBar) findViewById(R.id.slider_back);
+        View rootView = inflater.inflate(R.layout.activity_lights, container, false);
+
+        seekBar_front = (SeekBar) rootView.findViewById(R.id.slider_front);
+        seekBar_back = (SeekBar) rootView.findViewById(R.id.slider_back);
 
         List <String> spinnerArray = new ArrayList <String>();
         spinnerArray.add("Mode 1");
         spinnerArray.add("Mode 2");
         spinnerArray.add("Mode 3");
 
-        ArrayAdapter <String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, spinnerArray);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_front = (Spinner) findViewById(R.id.spinner_front);
+        spinner_front = (Spinner) rootView.findViewById(R.id.spinner_front);
         spinner_front.setAdapter(adapter);
-        spinner_back = (Spinner) findViewById(R.id.spinner_back);
+        spinner_back = (Spinner) rootView.findViewById(R.id.spinner_back);
         spinner_back.setAdapter(adapter);
 
-        spinner_front.setOnItemSelectedListener(new OnItemSelectedListener()
+        spinner_front.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView <?> adapterView, View view, int position, long id)
@@ -77,7 +80,7 @@ public class Lights extends AppCompatActivity {
 
             }
         });
-        spinner_back.setOnItemSelectedListener(new OnItemSelectedListener()
+        spinner_back.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView <?> adapterView, View view, int position, long id)
@@ -103,7 +106,7 @@ public class Lights extends AppCompatActivity {
             }
         });
 
-        ViewGroup layout = (ViewGroup) findViewById(R.id.activity_lights);
+        return rootView;
     }
 
     public static void setBluetoothSocket(BluetoothSocket socket) {

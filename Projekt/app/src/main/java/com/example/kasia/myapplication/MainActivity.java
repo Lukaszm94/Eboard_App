@@ -10,14 +10,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.Menu;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.Button;
+
 
 public class MainActivity extends AppCompatActivity {
     //public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
@@ -34,6 +36,13 @@ public class MainActivity extends AppCompatActivity {
     ReceiverThread receiver;
     DataManager dataManager;
     private Timer autoUpdate;
+
+    final Battery fragment_battery = new Battery();
+    final Current fragment_current = new Current();
+    final Speed fragment_speed = new Speed();
+    final Temperature fragment_temperature = new Temperature();
+    final Lights fragment_lights = new Lights();
+    final Settings fragment_settings = new Settings();
 
     /*public MainActivity() {
 
@@ -59,83 +68,75 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.i(TAG, "No need to initialize");
         }
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.add(R.id.Frame_battery, fragment_battery);
+        fragmentTransaction.commit();
+
+        Button button_battery = (Button) findViewById(R.id.batteryButton);
+        button_battery.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                FragmentTransaction fragmentTransaction_battery = fragmentManager.beginTransaction();
+                fragmentTransaction_battery.replace(R.id.Frame_battery, fragment_battery);
+                fragmentTransaction_battery.commit();
+            }
+        });
+
+        Button button_current = (Button) findViewById(R.id.currentButton);
+        button_current.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                FragmentTransaction fragmentTransaction_current = fragmentManager.beginTransaction();
+                fragmentTransaction_current.replace(R.id.Frame_battery, fragment_current);
+                fragmentTransaction_current.commit();
+            }
+        });
+
+
+        Button button_speed = (Button) findViewById(R.id.speedButton);
+        button_speed.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                FragmentTransaction fragmentTransaction_speed = fragmentManager.beginTransaction();
+                fragmentTransaction_speed.replace(R.id.Frame_battery, fragment_speed);
+                fragmentTransaction_speed.commit();
+            }
+        });
+
+        Button button_temperature = (Button) findViewById(R.id.temperatureButton);
+        button_temperature.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                FragmentTransaction fragmentTransaction_temperature = fragmentManager.beginTransaction();
+                fragmentTransaction_temperature.replace(R.id.Frame_battery, fragment_temperature);
+                fragmentTransaction_temperature.commit();
+            }
+        });
+
+        Button button_lights = (Button) findViewById(R.id.lightsButton);
+        button_lights.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                FragmentTransaction fragmentTransaction_lights = fragmentManager.beginTransaction();
+                fragmentTransaction_lights.replace(R.id.Frame_battery, fragment_lights);
+                fragmentTransaction_lights.commit();
+            }
+        });
+
+        Button button_settings = (Button) findViewById(R.id.settingsButton);
+        button_settings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                FragmentTransaction fragmentTransaction_settings = fragmentManager.beginTransaction();
+                fragmentTransaction_settings.replace(R.id.Frame_battery, fragment_settings);
+                fragmentTransaction_settings.commit();
+            }
+        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.battery:
-            {
-                Intent intent_battery = new Intent(this, Battery.class);
-                startActivity(intent_battery);
-                //break;
-            }
-            return true;
-
-            case R.id.connect:
-            {
-                Intent intent_connect = new Intent(this, Connect.class);
-                startActivity(intent_connect);
-                //return true;
-            }
-            return true;
-            case R.id.current:
-            {
-                Intent intent_current = new Intent(this, Current.class);
-                startActivity(intent_current);
-                //return true;
-            }
-            return true;
-            case R.id.speed:
-            {
-                Intent intent_speed = new Intent(this, Speed.class);
-                startActivity(intent_speed);
-                //return true;
-            }
-            return true;
-            case R.id.temperature:
-            {
-                Intent intent_temperature = new Intent(this, Temperature.class);
-                startActivity(intent_temperature);
-                //return true;
-            }
-            return true;
-            case R.id.map:
-            {
-                //Intent intent_battery = new Intent(this, Battery.class);
-                //startActivity(intent_battery);
-                return true;
-            }
-            //return true;
-            case R.id.lights:
-            {
-                Intent intent_lights = new Intent(this, Lights.class);
-                startActivity(intent_lights);
-                //return true;
-            }
-            return true;
-            case R.id.settings:
-            {
-                Intent intent_settings = new Intent(this, Settings.class);
-                startActivity(intent_settings);
-                //return true;
-            }
-            return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
 
     @Override
     public void onResume() {
@@ -169,6 +170,11 @@ public class MainActivity extends AppCompatActivity {
         //updateBatteryData(dataManager.getAverageBatteryData());
         //updateCurrentData(dataManager.getAverageCurrentData());
         //TODO update fragments data when fragments code is ready
+
+        fragment_current.getData(dataManager);
+        fragment_battery.getData(dataManager);
+        fragment_speed.getData(dataManager);
+        fragment_temperature.getData(dataManager);
     }
 
     private void disconnectBT()
