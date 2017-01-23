@@ -127,6 +127,6 @@ public class Lights extends Fragment {
         } catch (IOException e) {
             message = "Update failed";
         }
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 }

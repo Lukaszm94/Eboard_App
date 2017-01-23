@@ -40,6 +40,14 @@ public class PacketBuffer<T extends Packet> {
         }
     }
 
+    public synchronized int size() {
+        return buffer.size();
+    }
+
+    public synchronized T getLast() {
+        return buffer.get(buffer.size() - 1);
+    }
+
     //removes old packets
     public synchronized void update(long currentTimestamp) {
         try {

@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "MainActivity onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        //FIXME Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        //setSupportActionBar(myToolbar);
 
         if(savedInstanceState == null) { // app is being started
             Log.i(TAG, "Initialize shit");
@@ -64,7 +64,20 @@ public class MainActivity extends AppCompatActivity {
             dataManager = new DataManager(this);
             receiver = new ReceiverThread("Receiver");
             receiver.setDataManager(dataManager);
-            new ConnectBT().execute(); //Call the class to connect
+            Intent intent = getIntent();
+            if(intent != null) {
+                Bundle extras = intent.getExtras();
+                String btAddress = null;
+                if(extras != null) {
+                    btAddress = extras.getString(DeviceListActivity.EXTRA_ADDRESS);
+                }
+                if(btAddress != null) {
+                    Log.i(TAG, "BT address received, connecting");
+                    new ConnectBT().execute(); //Call the class to connect
+                } else {
+                    Log.i(TAG, "No address received from DeviceListActivity");
+                }
+            }
         } else {
             Log.i(TAG, "No need to initialize");
         }
@@ -166,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateUI() {
-        //Log.i(TAG, "Update UI");
+        Log.i(TAG, "Update UI");
         //updateBatteryData(dataManager.getAverageBatteryData());
         //updateCurrentData(dataManager.getAverageCurrentData());
         //TODO update fragments data when fragments code is ready

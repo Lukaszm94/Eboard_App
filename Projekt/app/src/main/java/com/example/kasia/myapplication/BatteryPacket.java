@@ -16,6 +16,7 @@ public class BatteryPacket extends Packet {
     public double ampHoursCharged;
 
     BatteryPacket() {
+        timestamp = System.currentTimeMillis();
         cellsVoltage = new double[BATTERY_CELLS_COUNT];
         timestamp = 0;
         CUBatteryVoltage = 0;

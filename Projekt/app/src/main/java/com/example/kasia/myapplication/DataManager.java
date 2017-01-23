@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Luke on 2017-01-15.
@@ -19,6 +21,8 @@ public class DataManager extends Thread {
     private PacketBuffer<BatteryPacket> batteryBuffer;
     private PacketBuffer<TemperaturePacket> temperatureBuffer;
     private PacketBuffer<SpeedPacket> speedBuffer;
+    //buffers mutex
+    Semaphore buffersMutex = new Semaphore(1);
     //logged data struct container
     private ArrayList<BigPacket> logBuffer;
     //autosave data
@@ -60,27 +64,36 @@ public class DataManager extends Thread {
     }
 
     public CurrentPacket getAverageCurrentData() {
-        currentBuffer.update(System.currentTimeMillis());
         CurrentPacket avgPacket = new CurrentPacket(System.currentTimeMillis(), 0, 0);
+        if(!acquireMutex()) {
+            return avgPacket;
+        }
+        currentBuffer.update(System.currentTimeMillis());
         int samples = currentBuffer.buffer.size();
         //Log.i(TAG, "Current samples count: " + samples);
         if(samples == 0) {
+            releaseMutex();
             return avgPacket;
         }
         for(CurrentPacket packet : currentBuffer.buffer) {
             avgPacket.current1 += packet.current1;
             avgPacket.current2 += packet.current2;
         }
+        releaseMutex();
         avgPacket.current1 /= samples;
         avgPacket.current2 /= samples;
         return avgPacket;
     }
 
     public BatteryPacket getAverageBatteryData() {
-        batteryBuffer.update(System.currentTimeMillis());
         BatteryPacket avgPacket = new BatteryPacket();
+        if(!acquireMutex()) {
+            return avgPacket;
+        }
+        batteryBuffer.update(System.currentTimeMillis());
         int samples = batteryBuffer.buffer.size();
         if(samples == 0) {
+            releaseMutex();
             return avgPacket;
         }
         for(BatteryPacket packet : batteryBuffer.buffer) {
@@ -92,6 +105,7 @@ public class DataManager extends Thread {
             avgPacket.ampHoursDrawn += packet.ampHoursDrawn;
             avgPacket.ampHoursCharged += packet.ampHoursCharged;
         }
+        releaseMutex();
         for(int i = 0; i < BatteryPacket.BATTERY_CELLS_COUNT; i++) {
             avgPacket.cellsVoltage[i] /= samples;
         }
@@ -103,10 +117,14 @@ public class DataManager extends Thread {
     }
 
     public TemperaturePacket getAverageTemperatureData() {
-        temperatureBuffer.update(System.currentTimeMillis());
         TemperaturePacket avgPacket = new TemperaturePacket(System.currentTimeMillis(), 0, 0, 0, 0);
+        if(!acquireMutex()) {
+            return avgPacket;
+        }
+        temperatureBuffer.update(System.currentTimeMillis());
         int samples = temperatureBuffer.buffer.size();
         if(samples == 0) {
+            releaseMutex();
             return avgPacket;
         }
         for(TemperaturePacket packet : temperatureBuffer.buffer) {
@@ -115,6 +133,7 @@ public class DataManager extends Thread {
             avgPacket.driversUnitCaseTemperature += packet.driversUnitCaseTemperature;
             avgPacket.powerSwitchTemperature += packet.powerSwitchTemperature;
         }
+        releaseMutex();
         avgPacket.VESC1Temperature /= samples;
         avgPacket.VESC2Temperature /= samples;
         avgPacket.driversUnitCaseTemperature /= samples;
@@ -123,17 +142,54 @@ public class DataManager extends Thread {
     }
 
     public SpeedPacket getAverageSpeedData() {
-        speedBuffer.update(System.currentTimeMillis());
         SpeedPacket avgPacket = new SpeedPacket(System.currentTimeMillis(), 0);
+        if(!acquireMutex()) {
+            return avgPacket;
+        }
+        speedBuffer.update(System.currentTimeMillis());
         int samples = speedBuffer.buffer.size();
         if(samples == 0) {
+            releaseMutex();
             return avgPacket;
         }
         for(SpeedPacket packet : speedBuffer.buffer) {
             avgPacket.speed += packet.speed;
         }
+        releaseMutex();
         avgPacket.speed /= samples;
         return avgPacket;
+    }
+
+    public CurrentPacket getNewestCurrentPacket() {
+        currentBuffer.update(System.currentTimeMillis());
+        if(currentBuffer.size() == 0) {
+            return new CurrentPacket(System.currentTimeMillis(), 0, 0);
+        }
+        return currentBuffer.getLast();
+    }
+
+    public BatteryPacket getNewestBatteryPacket() {
+        batteryBuffer.update(System.currentTimeMillis());
+        if(batteryBuffer.size() == 0) {
+            return new BatteryPacket();
+        }
+        return batteryBuffer.getLast();
+    }
+
+    public TemperaturePacket getNewestTemperaturePacket() {
+        temperatureBuffer.update(System.currentTimeMillis());
+        if(temperatureBuffer.size() == 0) {
+            return new TemperaturePacket(System.currentTimeMillis(),0,0,0,0);
+        }
+        return temperatureBuffer.getLast();
+    }
+
+    public SpeedPacket getNewestSpeedPacket() {
+        speedBuffer.update(System.currentTimeMillis());
+        if(speedBuffer.size() == 0) {
+            return new SpeedPacket();
+        }
+        return speedBuffer.getLast();
     }
 
     public void run() {
@@ -160,9 +216,14 @@ public class DataManager extends Thread {
     }
 
     private void appendLog() {
+        if(!acquireMutex()) {
+            Log.i(TAG, "Unable to append log, cannot acquire mutex");
+            return;
+        }
         long t = System.currentTimeMillis();
         BigPacket packet = new BigPacket(t, getAverageCurrentData(), getAverageBatteryData(), getAverageTemperatureData(), getAverageSpeedData());
         logBuffer.add(packet);
+        releaseMutex();
     }
 
     private synchronized void performAutosave() {
@@ -213,6 +274,21 @@ public class DataManager extends Thread {
             Log.e(TAG, "Directory not created");
         }
         return file;
+    }
+
+    private boolean acquireMutex() {
+        try {
+            if(buffersMutex.tryAcquire(10, TimeUnit.MILLISECONDS)) {
+                return true;
+            }
+        } catch(Exception e) {
+            Log.i(TAG, "Acquire mutex exception");
+        }
+        return false;
+    }
+
+    private void releaseMutex() {
+        buffersMutex.release();
     }
 }
 

@@ -9,7 +9,7 @@ import java.util.Locale;
 public class SpeedPacket extends Packet {
     public double speed; // in m/s
     SpeedPacket() {
-        timestamp = 0;
+        timestamp = System.currentTimeMillis();
         speed = 0;
     }
     SpeedPacket(long t, double s) {

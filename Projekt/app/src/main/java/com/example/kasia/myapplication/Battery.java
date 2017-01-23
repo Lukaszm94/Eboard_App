@@ -79,10 +79,11 @@ public class Battery extends Fragment {
     public void getData(DataManager object_datamanager){
 
         BatteryPacket packet = object_datamanager.getAverageBatteryData();
-        DataPoint p1 = new DataPoint(packet.timestamp, packet.CUBatteryVoltage); // Nie mam pojęcia czy tu ma być CUBatteryVoltage czy VESCBatteryVoltage, poprawisz sobie
+        DataPoint p1 = new DataPoint(packet.timestamp, packet.VESCBatteryVoltage);
         vector_battery.add(p1);
-        voltage = packet.CUBatteryVoltage;
+        voltage = packet.VESCBatteryVoltage;
         //charge = packet.??;  Nie ogarniam Twoich parametrów.. tu ma być ampHoursCharged?
+        //FIXME z tym charge trochę się skomplikowała sprawa. Wstawiaj w to pole wartość z ampHoursDrawn
         cell1 = packet.cellsVoltage[0];
         cell2 = packet.cellsVoltage[1];
         cell3 = packet.cellsVoltage[2];
