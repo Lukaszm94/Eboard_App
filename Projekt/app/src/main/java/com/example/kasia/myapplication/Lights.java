@@ -28,6 +28,7 @@ public class Lights extends Fragment {
     Spinner spinner_back;
     SeekBar seekBar_front;
     SeekBar seekBar_back;
+    Button updateButton;
     private static WeakReference<BluetoothSocket> btSocketReference;
 
     public final int UPDATE_REAR_LIGHTS_REQUEST_CODE = 1;
@@ -55,62 +56,21 @@ public class Lights extends Fragment {
         spinner_back = (Spinner) rootView.findViewById(R.id.spinner_back);
         spinner_back.setAdapter(adapter);
 
-        spinner_front.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        updateButton = (Button) rootView.findViewById(R.id.updateButton);
+        updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView <?> adapterView, View view, int position, long id)
-            {
-                switch (position) {
-                    case 0:
-                        // 1
-                        break;
-                    case 1:
-                        // 2
-                        break;
-                    case 2:
-                        // 3
-                        break;
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView)
-            {
-
+            public void onClick(View v) {
+                update_data(v);
             }
         });
-        spinner_back.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView <?> adapterView, View view, int position, long id)
-            {
-                switch (position) {
-                    case 0:
-                        // 1
-                        break;
-                    case 1:
-                        // 2
-                        break;
-                    case 2:
-                        // 3
-                        break;
 
-                }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView)
-            {
-
-            }
-        });
 
         return rootView;
     }
 
     public static void setBluetoothSocket(BluetoothSocket socket) {
-        btSocketReference = new WeakReference<BluetoothSocket>(socket);
+        btSocketReference = new WeakReference<>(socket);
     }
 
     public void update_data(View v) {
@@ -127,6 +87,6 @@ public class Lights extends Fragment {
         } catch (IOException e) {
             message = "Update failed";
         }
-        //Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 }
