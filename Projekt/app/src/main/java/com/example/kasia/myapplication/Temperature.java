@@ -5,88 +5,81 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.util.Locale;
 import java.util.Vector;
 
 public class Temperature extends Fragment {
 
-    Vector<DataPoint> vector_temperature1 = new Vector<DataPoint>();
-    Vector<DataPoint> vector_temperature2 = new Vector<DataPoint>();
-    double temperature1_momentary;
-    double temperature1_average;
-    double temperature2_momentary;
-    double temperature2_average;
+    GraphView graph;
+    LineGraphSeries<DataPoint> seriesT1;
+    LineGraphSeries<DataPoint> seriesT2;
+
+    private double temperature1_average = 0;
+    private double temperature2_average = 0;
+    private long lastTimestamp = 0; // in seconds
+
+    TextView temperatureTextView;
+
+    boolean viewCreated = false;
+    private final int SAMPLES_COUNT = 50;
+    private final String TAG = "TEMPERATURE_FRAGMENT";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        Log.i(TAG, "onCreateView");
         View rootView = inflater.inflate(R.layout.activity_temperature, container, false);
 
-        int size_of_vector_temperature1 = vector_temperature1.size();
-        DataPoint[] dataPointVector_temperature1 = new DataPoint[size_of_vector_temperature1];
-        int size_of_vector_temperature2 = vector_temperature2.size();
-        DataPoint[] dataPointVector_temperature2 = new DataPoint[size_of_vector_temperature2];
+        temperatureTextView = (TextView) rootView.findViewById(R.id.temperatureText);
+        graph = (GraphView) rootView.findViewById(R.id.graph_temperature);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(lastTimestamp - SAMPLES_COUNT/2);
+        graph.getViewport().setMaxX(lastTimestamp);
 
-        TextView textView_temperature1_momentary = (TextView) rootView.findViewById(R.id.text_temperature1_momentary_value);
-        String string_temperature1_momentary = String.valueOf(temperature1_momentary);
-        textView_temperature1_momentary.setText(string_temperature1_momentary);
-        TextView textView_temperature1_average = (TextView) rootView.findViewById(R.id.text_temperature1_average_value);
-        String string_temperature1_average = String.valueOf(temperature1_average);
-        textView_temperature1_average.setText(string_temperature1_average);
-        TextView textView_temperature2_momentary = (TextView) rootView.findViewById(R.id.text_temperature2_momentary_value);
-        String string_temperature2_momentary = String.valueOf(temperature2_momentary);
-        textView_temperature2_momentary.setText(string_temperature2_momentary);
-        TextView textView_temperature2_average = (TextView) rootView.findViewById(R.id.text_temperature2_average_value);
-        String string_temperature2_average = String.valueOf(temperature2_average);
-        textView_temperature2_average.setText(string_temperature2_average);
 
-        GraphView graph = (GraphView) rootView.findViewById(R.id.graph_temperature);
+        if(!viewCreated) {
+            GridLabelRenderer glr = graph.getGridLabelRenderer();
+            glr.setPadding(32); // should allow for 3 digits to fit on screen
 
-        for(int i = 0; i < size_of_vector_temperature1; i++)
-        {
-            dataPointVector_temperature1[i] = vector_temperature1.get(i);
-            dataPointVector_temperature2[i] = vector_temperature2.get(i);
+            seriesT1 = new LineGraphSeries<>();
+            seriesT1.setColor(Color.BLUE);
+
+            seriesT2 = new LineGraphSeries<>();
+            seriesT2.setColor(Color.RED);
         }
 
-        LineGraphSeries<DataPoint> seriesTemp1 = new LineGraphSeries<>(dataPointVector_temperature1);
-        seriesTemp1.setColor(Color.BLUE);
-        graph.addSeries(seriesTemp1);
+        graph.addSeries(seriesT1);
+        graph.addSeries(seriesT2);
 
-        LineGraphSeries<DataPoint> seriesTemp2 = new LineGraphSeries<>(dataPointVector_temperature2);
-        seriesTemp2.setColor(Color.RED);
-        graph.addSeries(seriesTemp2);
-
-        return rootView; //inflater.inflate(R.layout.temperature, container, false);
+        viewCreated = true;
+        return rootView;
     }
 
     public void getData(DataManager object_datamanager){
-
+        if(!viewCreated) {
+            return;
+        }
         TemperaturePacket packet = object_datamanager.getAverageTemperatureData();
-        DataPoint p1 = new DataPoint(packet.timestamp, packet.VESC1Temperature);
-        vector_temperature1.add(p1);
-        DataPoint p2 = new DataPoint(packet.timestamp, packet.VESC2Temperature);
-        vector_temperature2.add(p2);
-        //temperature1_momentary = packet.VESC1Temperature;
+        DataPoint p1 = new DataPoint(packet.timestamp / 1000.0, packet.VESC1Temperature);
+        DataPoint p2 = new DataPoint(packet.timestamp / 1000.0, packet.VESC2Temperature);
         temperature1_average = packet.VESC1Temperature;
-        //temperature2_momentary = packet.VESC2Temperature;
         temperature2_average = packet.VESC2Temperature;
-        while(vector_temperature1.size() > 10)
-        {
-            vector_temperature1.remove(0);
-        }
-        while(vector_temperature2.size() > 10)
-        {
-            vector_temperature2.remove(0);
-        }
+        lastTimestamp = (long) p1.getX();
+
+        seriesT1.appendData(p1, true, SAMPLES_COUNT);
+        seriesT2.appendData(p2, true, SAMPLES_COUNT);
+        temperatureTextView.setText(String.format(Locale.UK, "%d | %d\n°C", (int)(temperature1_average + 0.5), (int)(temperature2_average + 0.5)));
     }
 
 }

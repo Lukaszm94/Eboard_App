@@ -40,7 +40,7 @@ public class DeviceListActivity extends AppCompatActivity {
 
         if(myBluetooth == null)
         {
-            //Show a mensag. that the device has no bluetooth adapter
+            //Show a message that the device has no bluetooth adapter
             Toast.makeText(getApplicationContext(), "Bluetooth Device Not Available", Toast.LENGTH_LONG).show();
 
             //finish apk
@@ -96,7 +96,7 @@ public class DeviceListActivity extends AppCompatActivity {
             Intent i = new Intent(DeviceListActivity.this, MainActivity.class);
 
             //Change the activity.
-            i.putExtra(EXTRA_ADDRESS, address); //this will be received at ledControl (class) Activity
+            i.putExtra(EXTRA_ADDRESS, address); //this will be received at MainActivity
             startActivity(i);
         }
     };

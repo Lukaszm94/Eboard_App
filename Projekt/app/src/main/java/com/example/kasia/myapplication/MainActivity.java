@@ -42,22 +42,14 @@ public class MainActivity extends AppCompatActivity {
     final Speed fragment_speed = new Speed();
     final Temperature fragment_temperature = new Temperature();
     final Lights fragment_lights = new Lights();
-    final Settings fragment_settings = new Settings();
-
-    /*public MainActivity() {
-
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "MainActivity onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //FIXME Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        //setSupportActionBar(myToolbar);
 
         if(savedInstanceState == null) { // app is being started
-            Log.i(TAG, "Initialize shit");
             Intent newint = getIntent();
             address = newint.getStringExtra(DeviceListActivity.EXTRA_ADDRESS); //receive the address of the bluetooth device
             parser = new PacketParser();
@@ -139,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button button_settings = (Button) findViewById(R.id.settingsButton);
+        /*Button button_settings = (Button) findViewById(R.id.settingsButton);
         button_settings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
 
@@ -147,30 +139,18 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction_settings.replace(R.id.Frame_battery, fragment_settings);
                 fragmentTransaction_settings.commit();
             }
-        });
+        });*/
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        autoUpdate = new Timer();
-        autoUpdate.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateUI();
-                    }
-                });
-            }
-        }, 0, 500);
     }
 
     @Override
     public void onPause() {
-        autoUpdate.cancel();
+        //autoUpdate.cancel();
         super.onPause();
     }
 
@@ -180,8 +160,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateUI() {
         Log.i(TAG, "Update UI");
-        //updateBatteryData(dataManager.getAverageBatteryData());
-        //updateCurrentData(dataManager.getAverageCurrentData());
+        if(dataManager == null) {
+            Log.e(TAG, "dataManager object is null");
+            return;
+        }
         //TODO update fragments data when fragments code is ready
 
         fragment_current.getData(dataManager);
@@ -246,6 +228,18 @@ public class MainActivity extends AppCompatActivity {
                 startReceiving();
                 Lights.setBluetoothSocket(btSocket);
                 isBtConnected = true;
+                autoUpdate = new Timer();
+                autoUpdate.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateUI();
+                            }
+                        });
+                    }
+                }, 0, 500);
             }
             progress.dismiss();
         }

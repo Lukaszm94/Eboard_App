@@ -21,6 +21,7 @@ public class DataManager extends Thread {
     private PacketBuffer<BatteryPacket> batteryBuffer;
     private PacketBuffer<TemperaturePacket> temperatureBuffer;
     private PacketBuffer<SpeedPacket> speedBuffer;
+    long timestampOffset = 0;
     //buffers mutex
     Semaphore buffersMutex = new Semaphore(1);
     //logged data struct container
@@ -43,30 +44,46 @@ public class DataManager extends Thread {
         speedBuffer = new PacketBuffer<>();
         logBuffer = new ArrayList<>();
         lastAutosaveTimestamp = System.currentTimeMillis();
+        timestampOffset = System.currentTimeMillis();
         autosaveInterval = 120000;
         mainActivity = main;
     }
 
     public synchronized void newCurrentPacket(CurrentPacket packet) {
-        currentBuffer.add(packet);
+        if(acquireMutex()) {
+            currentBuffer.add(packet);
+            releaseMutex();
+        }
     }
 
     public synchronized void newBatteryPacket(BatteryPacket packet) {
-        batteryBuffer.add(packet);
+        if(acquireMutex()) {
+            batteryBuffer.add(packet);
+            releaseMutex();
+        }
     }
 
     public synchronized void newTemperaturePacket(TemperaturePacket packet) {
-        temperatureBuffer.add(packet);
+        if(acquireMutex()) {
+            temperatureBuffer.add(packet);
+            releaseMutex();
+        }
     }
 
     public synchronized void newSpeedPacket(SpeedPacket packet) {
-        speedBuffer.add(packet);
+        if(acquireMutex()) {
+            speedBuffer.add(packet);
+            releaseMutex();
+        }
     }
 
     public CurrentPacket getAverageCurrentData() {
-        CurrentPacket avgPacket = new CurrentPacket(System.currentTimeMillis(), 0, 0);
+        CurrentPacket avgPacket = new CurrentPacket(System.currentTimeMillis() - timestampOffset, 0, 0);
         if(!acquireMutex()) {
+            Log.i(TAG, "Unable to acquire mutex to calculate average current data");
             return avgPacket;
+        } else {
+            Log.i(TAG, "getAverageCurrentData, mutex acquired");
         }
         currentBuffer.update(System.currentTimeMillis());
         int samples = currentBuffer.buffer.size();
@@ -87,6 +104,7 @@ public class DataManager extends Thread {
 
     public BatteryPacket getAverageBatteryData() {
         BatteryPacket avgPacket = new BatteryPacket();
+        avgPacket.timestamp = System.currentTimeMillis() - timestampOffset;
         if(!acquireMutex()) {
             return avgPacket;
         }
@@ -117,7 +135,7 @@ public class DataManager extends Thread {
     }
 
     public TemperaturePacket getAverageTemperatureData() {
-        TemperaturePacket avgPacket = new TemperaturePacket(System.currentTimeMillis(), 0, 0, 0, 0);
+        TemperaturePacket avgPacket = new TemperaturePacket(System.currentTimeMillis() - timestampOffset, 0, 0, 0, 0);
         if(!acquireMutex()) {
             return avgPacket;
         }
@@ -142,7 +160,7 @@ public class DataManager extends Thread {
     }
 
     public SpeedPacket getAverageSpeedData() {
-        SpeedPacket avgPacket = new SpeedPacket(System.currentTimeMillis(), 0);
+        SpeedPacket avgPacket = new SpeedPacket(System.currentTimeMillis() - timestampOffset, 0);
         if(!acquireMutex()) {
             return avgPacket;
         }
@@ -216,14 +234,14 @@ public class DataManager extends Thread {
     }
 
     private void appendLog() {
-        if(!acquireMutex()) {
+        /*if(!acquireMutex()) {
             Log.i(TAG, "Unable to append log, cannot acquire mutex");
             return;
-        }
+        }*/
         long t = System.currentTimeMillis();
         BigPacket packet = new BigPacket(t, getAverageCurrentData(), getAverageBatteryData(), getAverageTemperatureData(), getAverageSpeedData());
         logBuffer.add(packet);
-        releaseMutex();
+        //releaseMutex();
     }
 
     private synchronized void performAutosave() {
@@ -284,6 +302,7 @@ public class DataManager extends Thread {
         } catch(Exception e) {
             Log.i(TAG, "Acquire mutex exception");
         }
+        Log.i(TAG, "acquireMutex: failed");
         return false;
     }
 

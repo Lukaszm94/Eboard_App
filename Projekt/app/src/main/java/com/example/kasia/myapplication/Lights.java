@@ -31,7 +31,6 @@ public class Lights extends Fragment {
     Button updateButton;
     private static WeakReference<BluetoothSocket> btSocketReference;
 
-    public final int UPDATE_REAR_LIGHTS_REQUEST_CODE = 1;
     private final String TAG = "Lights";
 
     @Override
@@ -44,9 +43,9 @@ public class Lights extends Fragment {
         seekBar_back = (SeekBar) rootView.findViewById(R.id.slider_back);
 
         List <String> spinnerArray = new ArrayList <String>();
-        spinnerArray.add("Mode 1");
-        spinnerArray.add("Mode 2");
-        spinnerArray.add("Mode 3");
+        spinnerArray.add("Solid");
+        spinnerArray.add("Blink 50/50");
+        spinnerArray.add("Blink 20/80");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, spinnerArray);
