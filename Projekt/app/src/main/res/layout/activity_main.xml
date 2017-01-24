@@ -15,32 +15,32 @@
 
             <Button
                 android:id="@+id/batteryButton"
-                android:text="BATTERY"
+                android:text="@string/BATTERY"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/currentButton"
-                android:text="CURRENT"
+                android:text="@string/CURRENT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClickCurrent"/>
 
             <Button
                 android:id="@+id/speedButton"
-                android:text="SPEED"
+                android:text="@string/SPEED"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/temperatureButton"
-                android:text="TEMPERATURE"
+                android:text="@string/TEMPERATURE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/lightsButton"
-                android:text="LIGHTS"
+                android:text="@string/LIGHTS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/text_front"
-            android:text="Front"
+            android:text="@string/front"
             android:layout_margin="5dp"
             android:textSize="20dp"/>
 
@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/text_mode_front"
-                android:text="Mode: "
+                android:text="@string/mode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -60,7 +60,7 @@
 
         <TextView
             android:id="@+id/text_back"
-            android:text="Back"
+            android:text="@string/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -84,7 +84,7 @@
 
             <TextView
                 android:id="@+id/text_mode_back"
-                android:text="Mode: "
+                android:text="@string/mode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -103,7 +103,7 @@
             android:id="@+id/updateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Update"
+            android:text="@string/update"
             android:layout_marginTop="42dp" />
 
     </LinearLayout>

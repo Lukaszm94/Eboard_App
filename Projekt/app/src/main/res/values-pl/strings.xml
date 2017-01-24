@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aplikacja</string>
+    <string name="edit_message">Wprowadź wiadomość</string>
+    <string name="button_send">Wyślij</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="title_activity_map">Mapa</string>
+
+    <string name="BATTERY">BATERIA</string>
+    <string name="CURRENT">NATĘŻENIE</string>
+    <string name="SPEED">PRĘDKOŚĆ</string>
+    <string name="TEMPERATURE">TEMPERATURA</string>
+    <string name="LIGHTS">OŚWIETLENIE</string>
+
+    <string name="front">Przód: </string>
+    <string name="back">Tył: </string>
+    <string name="mode">Tryb: </string>
+    <string name="update">Aktualizuj</string>
+
+</resources>
