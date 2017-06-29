@@ -5,30 +5,36 @@ package com.example.kasia.myapplication;
  */
 
 public class LightsPacket {
-    public byte brightness;
+    public byte frontBrightness;
+    public byte frontBlinkingMode;
+    public byte rearBrightness;
+    public byte rearBlinkingMode;
     public byte reactToBraking;
-    public byte blinkingMode;
 
     private final byte LIGHTS_PACKET_HEADER = 'l';
     private final byte PACKET_END_CHAR = ';';
 
     LightsPacket() {
-        this((byte)0,(byte)0,(byte)0);
+        this((byte)0,(byte)0,(byte)0,(byte)0,(byte)0);
     }
 
-    LightsPacket(byte brightness, byte reactToBraking, byte blinkingMode) {
-        this.brightness = brightness;
+    LightsPacket(byte frontBrightness, byte frontBlinkingMode, byte rearBrightness, byte rearBlinkingMode, byte reactToBraking) {
+        this.frontBrightness = frontBrightness;
+        this.frontBlinkingMode = frontBlinkingMode;
+        this.rearBrightness = rearBrightness;
+        this.rearBlinkingMode = rearBlinkingMode;
         this.reactToBraking = reactToBraking;
-        this.blinkingMode = blinkingMode;
     }
 
     public byte[] toSerialPacket() {
-        byte[] data = new byte[5];
+        byte[] data = new byte[7];
         data[0] = LIGHTS_PACKET_HEADER;
-        data[1] = brightness;
-        data[2] = reactToBraking;
-        data[3] = blinkingMode;
-        data[4] = PACKET_END_CHAR;
+        data[1] = frontBrightness;
+        data[2] = frontBlinkingMode;
+        data[3] = rearBrightness;
+        data[4] = rearBlinkingMode;
+        data[5] = reactToBraking;
+        data[6] = PACKET_END_CHAR;
         return data;
     }
 }

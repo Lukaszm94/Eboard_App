@@ -73,9 +73,11 @@ public class Lights extends Fragment {
     }
 
     public void update_data(View v) {
-        int mode = spinner_back.getSelectedItemPosition();
-        int brightness = seekBar_back.getProgress();
-        LightsPacket packet = new LightsPacket((byte) brightness, (byte) 1, (byte) mode);
+        int frontMode = spinner_front.getSelectedItemPosition();
+        int frontBrightness = seekBar_front.getProgress();
+        int rearMode = spinner_back.getSelectedItemPosition();
+        int rearBrightness = seekBar_back.getProgress();
+        LightsPacket packet = new LightsPacket((byte)frontBrightness, (byte)frontMode, (byte)rearBrightness, (byte)rearMode, (byte)1);
 
         if(btSocketReference == null) {
             return;
